@@ -10,13 +10,25 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_07_29_125643) do
+ActiveRecord::Schema[8.0].define(version: 2025_07_29_163648) do
+  create_table "comments", force: :cascade do |t|
+    t.text "content"
+    t.integer "crowd_report_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["crowd_report_id"], name: "index_comments_on_crowd_report_id"
+  end
+
   create_table "crowd_reports", force: :cascade do |t|
     t.string "level"
     t.text "comment"
     t.integer "location_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "time_slot"
+    t.boolean "is_recurring"
+    t.string "recurrence_pattern"
+    t.date "recurrence_end"
     t.index ["location_id"], name: "index_crowd_reports_on_location_id"
   end
 
@@ -25,7 +37,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_07_29_125643) do
     t.string "category"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.float "latitude"
+    t.float "longitude"
+    t.integer "x"
+    t.integer "y"
+    t.string "icon"
   end
 
+  add_foreign_key "comments", "crowd_reports"
   add_foreign_key "crowd_reports", "locations"
 end

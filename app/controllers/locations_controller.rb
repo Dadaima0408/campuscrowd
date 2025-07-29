@@ -8,7 +8,9 @@ class LocationsController < ApplicationController
 
   # GET /locations/1 or /locations/1.json
   def show
-  end
+  @location = Location.find(params[:id])
+  @reports = @location.crowd_reports.order(created_at: :asc)
+end
 
   # GET /locations/new
   def new
@@ -60,11 +62,19 @@ class LocationsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_location
-      @location = Location.find(params.expect(:id))
+      @location = Location.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def location_params
       params.expect(location: [ :name, :category ])
     end
+
+    def location_params
+  params.require(:location).permit(:name, :category, :x, :y, :icon)
+ end
+
+ def location_params
+  params.require(:location).permit(:name, :category, :latitude, :longitude, :x, :y, :icon)
+end
 end

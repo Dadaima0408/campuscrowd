@@ -1,25 +1,36 @@
-<p style="color: green"><%= notice %></p>
+<div class="container mt-4">
+  <h2 class="mb-4"><%= @location.name %>（<%= @location.category %>）</h2>
 
-<%= render @location %>
+  <div class="mb-4">
+    <%= link_to "この場所に投稿", new_crowd_report_path(crowd_report: { location_id: @location.id }), class: "btn btn-outline-success" %>
+    <%= link_to "場所一覧に戻る", locations_path, class: "btn btn-outline-secondary ms-2" %>
+  </div>
 
-<div>
-  <%= link_to "Edit this location", edit_location_path(@location) %> |
-  <%= link_to "Back to locations", locations_path %>
+  <h4 class="mb-3">この場所の混雑レポート</h4>
 
-  <%= button_to "Destroy this location", @location, method: :delete %>
+  <% if @location.crowd_reports.any? %>
+    <div class="row">
+      <% @location.crowd_reports.order(created_at: :desc).each do |report| %>
+        <div class="col-md-6 mb-4">
+          <div class="card border-success shadow-sm h-100">
+            <div class="card-body">
+              <h5 class="card-title">
+                <span class="badge bg-success">レベル: <%= report.level %></span>
+              </h5>
+              <p class="card-text mt-2"><%= report.comment %></p>
+            </div>
+            <div class="card-footer text-muted text-end" style="font-size: 0.85em;">
+              投稿日時: <%= report.created_at.strftime("%Y/%m/%d %H:%M") %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p class="text-muted">まだ混雑レポートがありません。</p>
+  <% end %>
 </div>
 
-<h2>この場所の混雑レポート</h2>
 
-<%= link_to "この場所に投稿", new_crowd_report_path(crowd_report: { location_id: @location.id }), class: "btn btn-primary" %>
-
-<ul>
-  <% @location.crowd_reports.order(created_at: :desc).each do |report| %>
-    <li>
-      <strong><%= report.level %></strong>: <%= report.comment %>（<%= time_ago_in_words(report.created_at) %>前）
-    </li>
-  <% end %>
-</ul>
-
-<h3>時間帯別レポート数</h3>
-<%= line_chart @location.crowd_reports.group_by_hour(:created_at).count %>
+<h3>📈 混雑レベル履歴</h3>
+<%= line_chart @reports.group_by_day(&:created_at).average(:level), xtitle: "日付", ytitle: "混雑レベル", min: 1, max: 5 %>

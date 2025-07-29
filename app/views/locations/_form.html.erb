@@ -21,7 +21,37 @@
     <%= form.text_field :category %>
   </div>
 
+<div class="mb-2">
+  <%= form.label :icon, "アイコン（直接入力）", class: "form-label" %>
+  <%= form.text_field :icon, class: "form-control", placeholder: "例：📍, 🏫, 🍽️, 📚, 🚪" %>
+  <small class="text-muted">例：📍 通常 / 🏫 建物 / 🍽️ 食堂 / 📚 図書館 / 🚪 出入口</small>
+</div>
+
   <div>
     <%= form.submit %>
   </div>
+
+  <div class="mb-2">
+  <%= form.label :latitude, "緯度 (Latitude)", class: "form-label" %>
+  <%= form.text_field :latitude, class: "form-control" %>
+  </div>
+
+  <div class="mb-2">
+  <%= form.label :longitude, "経度 (Longitude)", class: "form-label" %>
+  <%= form.text_field :longitude, class: "form-control" %>
+  </div>
+ 
+ <div class="mb-3">
+  <%= form.label :x, "X 座標" %>
+  <%= form.number_field :x, class: "form-control", min: 0 %>
+ </div>
+ 
+ <div class="mb-3">
+  <%= form.label :y, "Y 座標" %>
+  <%= form.number_field :y, class: "form-control", min: 0 %>
+ </div>
+
 <% end %>
+
+
+

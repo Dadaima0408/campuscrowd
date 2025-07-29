@@ -1,16 +1,15 @@
 Rails.application.routes.draw do
-  resources :crowd_reports
+  resources :locations do
+    get 'crowd_reports', to: 'locations#crowd_reports'
+  end
+
+Rails.application.routes.draw do
+  root "locations#index" # 또는 너의 앱에서 첫 화면으로 쓰고 싶은 controller#action
   resources :locations
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
+  resources :crowd_reports
+end
 
-  # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
-  # Can be used by load balancers and uptime monitors to verify that the app is live.
-  get "up" => "rails/health#show", as: :rails_health_check
-
-  # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
-  # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
-
-  # Defines the root path route ("/")
-  # root "posts#index"
+  resources :crowd_reports do
+    resources :comments, only: [:create]
+  end
 end

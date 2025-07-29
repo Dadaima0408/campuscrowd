@@ -1,16 +1,66 @@
-<p style="color: green"><%= notice %></p>
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <h2>📍 中央大学キャンパスマップ</h2>
 
-<% content_for :title, "Locations" %>
+  <%= link_to "📊 混雑状況 一覧を見る", crowd_reports_path, class: "btn btn-outline-secondary" %>
+</div>
 
-<h1>Locations</h1>
+<!-- 🔍 아이콘 필터 드롭다운 -->
+<label for="icon-filter">アイコンで絞り込み:</label>
+<select id="icon-filter" class="form-select mb-3" style="width: 200px;">
+  <option value="all">すべて表示</option>
+  <% @locations.map(&:icon).uniq.compact.each do |icon| %>
+    <option value="<%= icon %>"><%= icon %></option>
+  <% end %>
+</select>
 
-<div id="locations">
+<div id="map-container" style="position: relative; width: 100%; max-width: 1200px;">
+  <%= image_tag "ChuTamamap.png", id: "campus-map", alt: "キャンパスマップ", style: "width: 100%;" %>
+
   <% @locations.each do |location| %>
-    <%= render location %>
-    <p>
-      <%= link_to "Show this location", location %>
-    </p>
+    <% if location.x.present? && location.y.present? %>
+      <div class="map-pin"
+           data-icon="<%= location.icon %>"
+           data-x="<%= location.x %>"
+           data-y="<%= location.y %>">
+        <%= link_to (location.icon.presence || "📍"), location_path(location), style: "font-size: 24px;" %>
+      </div>
+    <% end %>
   <% end %>
 </div>
 
-<%= link_to "New location", new_location_path %>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const map = document.getElementById("campus-map");
+    const pins = document.querySelectorAll(".map-pin");
+
+    const adjustPins = () => {
+      const scaleX = map.width / map.naturalWidth;
+      const scaleY = map.height / map.naturalHeight;
+
+      pins.forEach(pin => {
+        const x = parseInt(pin.dataset.x);
+        const y = parseInt(pin.dataset.y);
+        pin.style.position = "absolute";
+        pin.style.left = `${x * scaleX}px`;
+        pin.style.top = `${y * scaleY}px`;
+      });
+    };
+
+    adjustPins();
+    window.addEventListener("resize", adjustPins); // 창 크기 변경 시 재계산
+  });
+</script>
+
+<hr>
+
+<h3>📋 登録済みの場所</h3>
+<ul>
+  <% @locations.each do |location| %>
+    <li>
+      <%= link_to (location.icon.presence || "📍") + " " + location.name, location_path(location) %>
+      （<%= location.category %>）
+    </li>
+  <% end %>
+</ul>
+
+<%= link_to "➕ 新しい場所を登録", new_location_path, class: "btn btn-primary mt-3" %>

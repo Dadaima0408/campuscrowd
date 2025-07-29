@@ -1,11 +1,25 @@
-<% content_for :title, "New crowd report" %>
+<% content_for :title, "New Crowd Report" %>
 
-<h1>New crowd report</h1>
+<h1>New Crowd Report</h1>
 
-<%= render "form", crowd_report: @crowd_report %>
+<%= form_with(model: @crowd_report, local: true) do |form| %>
+  <%= render "form", crowd_report: @crowd_report, form: form %>
+<% end %>
 
-<br>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const radios = document.querySelectorAll('input[name="crowd_report[is_recurring]"]');
+    const box = document.getElementById("recurrence-options");
 
-<div>
-  <%= link_to "Back to crowd reports", crowd_reports_path %>
-</div>
+    radios.forEach(radio => {
+      radio.addEventListener("change", () => {
+        box.style.display = (radio.value === "true" && radio.checked) ? "block" : "none";
+      });
+    });
+
+    const checked = document.querySelector('input[name="crowd_report[is_recurring]"]:checked');
+    if (checked && checked.value === "true") {
+      box.style.display = "block";
+    }
+  });
+</script>

@@ -23,6 +23,11 @@ class CrowdReportsController < ApplicationController
   def create
     @crowd_report = CrowdReport.new(crowd_report_params)
 
+    # time_slot이 선택되지 않거나 "現在時刻に基づく"인 경우 현재 시각 저장
+    if @crowd_report.time_slot.blank? || @crowd_report.time_slot == "現在時刻に基づく"
+      @crowd_report.time_slot = Time.zone.now.strftime("%H:%M")
+    end
+
     respond_to do |format|
       if @crowd_report.save
         format.html { redirect_to @crowd_report, notice: "Crowd report was successfully created." }
@@ -60,11 +65,19 @@ class CrowdReportsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_crowd_report
-      @crowd_report = CrowdReport.find(params.expect(:id))
+      @crowd_report = CrowdReport.find(params[:id])
     end
 
     # Only allow a list of trusted parameters through.
     def crowd_report_params
-      params.expect(crowd_report: [ :level, :comment, :location_id ])
+      params.require(:crowd_report).permit(
+        :level,
+        :comment,
+        :location_id,
+        :time_slot,
+        :is_recurring,
+        :recurrence_pattern,
+        :recurrence_end
+      )
     end
 end

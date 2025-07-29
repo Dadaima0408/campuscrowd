@@ -1,8 +1,7 @@
-<%= form_with(model: crowd_report) do |form| %>
+<%= form_with(model: crowd_report, local: true) do |form| %>
   <% if crowd_report.errors.any? %>
-    <div style="color: red">
-      <h2><%= pluralize(crowd_report.errors.count, "error") %> prohibited this crowd_report from being saved:</h2>
-
+    <div class="alert alert-danger">
+      <h4><%= pluralize(crowd_report.errors.count, "error") %> が発生しました:</h4>
       <ul>
         <% crowd_report.errors.each do |error| %>
           <li><%= error.full_message %></li>
@@ -11,22 +10,81 @@
     </div>
   <% end %>
 
-  <div>
-    <%= form.label :level, style: "display: block" %>
-    <%= form.text_field :level %>
+  <!-- 混雑レベル -->
+  <div class="mb-3">
+    <%= form.label :level, "混雑レベル", class: "form-label" %>
+    <%= form.number_field :level, class: "form-control", min: 1, max: 5 %>
   </div>
 
-  <div>
-    <%= form.label :comment, style: "display: block" %>
-    <%= form.textarea :comment %>
+  <!-- コメント -->
+  <div class="mb-3">
+    <%= form.label :comment, "コメント", class: "form-label" %>
+    <%= form.text_area :comment, class: "form-control", rows: 3 %>
   </div>
 
-  <div>
-    <%= form.label :location_id, style: "display: block" %>
-    <%= form.collection_select :location_id, Location.all, :id, :name, prompt: "場所を選択してください" %>
+  <!-- 場所選択 -->
+  <div class="mb-3">
+    <%= form.label :location_id, "場所", class: "form-label" %>
+    <%= form.collection_select :location_id, Location.all, :id, :name, { prompt: "場所を選択してください" }, class: "form-select" %>
   </div>
 
-  <div>
-    <%= form.submit %>
+  <!-- 投稿時間帯 -->
+  <div class="mb-3">
+    <%= form.label :time_slot, "時間帯", class: "form-label" %>
+    <%= form.select :time_slot, options_for_select(
+      ["現在時刻に基づく", "1限（9:00）", "2限（10:40）", "3限（13:00）", "4限（14:40）", "5限（16:30）", "6限（18:10）"],
+      selected: crowd_report.time_slot
+    ), {}, class: "form-select" %>
+  </div>
+
+  <!-- 一時的 or 定期的 -->
+  <div class="mb-3">
+    <%= form.label :is_recurring, "混雑状況の種類", class: "form-label d-block" %>
+    <div class="form-check form-check-inline">
+      <%= form.radio_button :is_recurring, false, id: "is_recurring_false", checked: !crowd_report.is_recurring %>
+      <%= form.label :is_recurring_false, "一時的", class: "form-check-label" %>
+    </div>
+    <div class="form-check form-check-inline">
+      <%= form.radio_button :is_recurring, true, id: "is_recurring_true", checked: crowd_report.is_recurring %>
+      <%= form.label :is_recurring_true, "定期的", class: "form-check-label" %>
+    </div>
+  </div>
+
+  <!-- 繰り返しオプション -->
+  <div id="recurrence-options" style="display: none;">
+    <div class="mb-3">
+      <%= form.label :recurrence_pattern, "繰り返しパターン", class: "form-label" %>
+      <%= form.select :recurrence_pattern, options_for_select(["毎日", "毎週", "平日", "週末"]), {}, class: "form-select" %>
+    </div>
+
+    <div class="mb-3">
+      <%= form.label :recurrence_end, "終了日", class: "form-label" %>
+      <%= form.date_field :recurrence_end, class: "form-control" %>
+    </div>
+  </div>
+
+  <!-- 제출 버튼 -->
+  <div class="d-flex justify-content-between mt-4">
+    <%= form.submit "投稿", class: "btn btn-primary" %>
+    <%= link_to "← 戻る", crowd_reports_path, class: "btn btn-secondary" %>
   </div>
 <% end %>
+
+<!-- JS: 定期的を選ぶ 경우 반복 설정 영역 표시 -->
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const radios = document.querySelectorAll('input[name="crowd_report[is_recurring]"]');
+    const box = document.getElementById("recurrence-options");
+
+    radios.forEach(radio => {
+      radio.addEventListener("change", () => {
+        box.style.display = (radio.value === "true" && radio.checked) ? "block" : "none";
+      });
+    });
+
+    const checked = document.querySelector('input[name="crowd_report[is_recurring]"]:checked');
+    if (checked && checked.value === "true") {
+      box.style.display = "block";
+    }
+  });
+</script>

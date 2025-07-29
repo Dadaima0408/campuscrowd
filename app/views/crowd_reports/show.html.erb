@@ -1,10 +1,43 @@
-<p style="color: green"><%= notice %></p>
+<div class="container mt-5">
+  <div class="card shadow p-4" style="max-width: 600px; margin: 0 auto;">
+    <h2 class="mb-4"><%= @crowd_report.location&.name %> の混雑状況</h2>
+<p><strong>🕒 投稿日時：</strong> <%= @crowd_report.created_at.strftime("%Y/%m/%d %H:%M") %></p>
+    <p><strong>📊 混雑レベル：</strong> <%= @crowd_report.level %></p>
+    <p><strong>🕒 時間帯：</strong> <%= @crowd_report.time_slot.presence || "（未設定）" %></p>
+    <p><strong>📝 コメント：</strong> <%= @crowd_report.comment.presence || "（コメントなし）" %></p>
+    <p><strong>📍 対象の場所：</strong> <%= @crowd_report.location&.name || "（不明な場所）" %></p>
 
-<%= render @crowd_report %>
+    <% if @crowd_report.is_recurring %>
+      <hr>
+      <p><strong>🔁 定期的な投稿です</strong></p>
+      <p><strong>📅 繰り返しパターン：</strong> <%= @crowd_report.recurrence_pattern.presence || "（未設定）" %></p>
+      <p><strong>⏳ 終了日：</strong> <%= @crowd_report.recurrence_end&.strftime("%Y年%m月%d日") || "（未設定）" %></p>
+    <% end %>
 
-<div>
-  <%= link_to "Edit this crowd report", edit_crowd_report_path(@crowd_report) %> |
-  <%= link_to "Back to crowd reports", crowd_reports_path %>
+<h5>💬 コメント一覧</h5>
+<% @crowd_report.comments.each do |comment| %>
+  <div class="border rounded p-3 mb-2">
+    <p><%= comment.content %></p>
+    <small class="text-muted">
+      🕒 投稿日時: <%= comment.created_at.strftime("%Y年%m月%d日 %H:%M") %>
+    </small>
+  </div>
+<% end %>
 
-  <%= button_to "Destroy this crowd report", @crowd_report, method: :delete %>
+<h5>✏️ コメントを投稿:</h5>
+<%= form_with(model: [@crowd_report, Comment.new], local: true) do |form| %>
+  <%= form.text_area :content, class: "form-control mb-2" %>
+  <%= form.submit "投稿", class: "btn btn-outline-primary" %>
+<% end %>
+
+    <div class="mt-4 d-flex justify-content-between">
+      <%= link_to "✏️ 編集", edit_crowd_report_path(@crowd_report), class: "btn btn-outline-primary" %>
+      <%= link_to "🗑️ 削除", @crowd_report, method: :delete, data: { confirm: "本当に削除しますか？" }, class: "btn btn-outline-danger" %>
+    </div>
+
+    <div class="mt-3">
+      <%= link_to "← 一覧に戻る", crowd_reports_path, class: "btn btn-link" %>
+      <%= link_to "🏫 場所一覧を見る", locations_path, class: "btn btn-outline-secondary mt-2" %>
+    </div>
+  </div>
 </div>

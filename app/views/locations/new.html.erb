@@ -2,10 +2,66 @@
 
 <h1>New location</h1>
 
-<%= render "form", location: @location %>
-
 <br>
-
 <div>
   <%= link_to "Back to locations", locations_path %>
 </div>
+
+<h1>場所登録</h1>
+
+<div style="position: relative; margin-bottom: 1rem;">
+  <%= image_tag "ChuTamamap.png", id: "campus-map", style: "width: 100%; border: 1px solid #ccc;" %>
+</div>
+
+<p>📍 画像をクリックして座標を指定してください。</p>
+
+<%= form_with(model: @location, local: true) do |form| %>
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :category %>
+    <%= form.text_field :category %>
+  </div>
+
+<div class="mb-2">
+  <%= form.label :icon, "アイコン（直接入力）", class: "form-label" %>
+  <%= form.text_field :icon, class: "form-control", placeholder: "例：📍, 🏫, 🍽️, 📚, 🚪" %>
+</div>
+
+  <div class="field">
+    <%= form.label :x, "X 座標" %>
+    <%= form.number_field :x, id: "input-x" %>
+  </div>
+
+  <div class="field">
+    <%= form.label :y, "Y 座標" %>
+    <%= form.number_field :y, id: "input-y" %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "登録", class: "btn btn-success" %>
+  </div>
+<% end %>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const map = document.getElementById("campus-map");
+    const inputX = document.getElementById("input-x");
+    const inputY = document.getElementById("input-y");
+
+    map.addEventListener("click", function(event) {
+      const rect = map.getBoundingClientRect();
+      const scaleX = map.naturalWidth / map.width;
+      const scaleY = map.naturalHeight / map.height;
+
+      const x = Math.round((event.clientX - rect.left) * scaleX);
+      const y = Math.round((event.clientY - rect.top) * scaleY);
+
+      inputX.value = x;
+      inputY.value = y;
+    });
+  });
+</script>
