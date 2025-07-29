@@ -9,6 +9,15 @@ group :production do
   gem 'pg'
 end
 
+# Gemfile
+
+group :production do
+  gem 'pg'
+end
+
+group :development, :test do
+end
+
 # SQLite3 for local development
 group :development, :test do
   gem 'sqlite3', '~> 1.4'
