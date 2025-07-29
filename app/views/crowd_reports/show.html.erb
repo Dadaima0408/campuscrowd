@@ -1,0 +1,10 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @crowd_report %>
+
+<div>
+  <%= link_to "Edit this crowd report", edit_crowd_report_path(@crowd_report) %> |
+  <%= link_to "Back to crowd reports", crowd_reports_path %>
+
+  <%= button_to "Destroy this crowd report", @crowd_report, method: :delete %>
+</div>

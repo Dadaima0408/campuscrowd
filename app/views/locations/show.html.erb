@@ -1,0 +1,25 @@
+<p style="color: green"><%= notice %></p>
+
+<%= render @location %>
+
+<div>
+  <%= link_to "Edit this location", edit_location_path(@location) %> |
+  <%= link_to "Back to locations", locations_path %>
+
+  <%= button_to "Destroy this location", @location, method: :delete %>
+</div>
+
+<h2>この場所の混雑レポート</h2>
+
+<%= link_to "この場所に投稿", new_crowd_report_path(crowd_report: { location_id: @location.id }), class: "btn btn-primary" %>
+
+<ul>
+  <% @location.crowd_reports.order(created_at: :desc).each do |report| %>
+    <li>
+      <strong><%= report.level %></strong>: <%= report.comment %>（<%= time_ago_in_words(report.created_at) %>前）
+    </li>
+  <% end %>
+</ul>
+
+<h3>時間帯別レポート数</h3>
+<%= line_chart @location.crowd_reports.group_by_hour(:created_at).count %>

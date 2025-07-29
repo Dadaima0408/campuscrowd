@@ -1,0 +1,20 @@
+current directory: /Users/dahyon/campuscrowd/vendor/bundle/ruby/3.2.0/gems/erb-5.0.2/ext/erb/escape
+/Users/dahyon/.rbenv/versions/3.2.2/bin/ruby extconf.rb
+checking for rb_ext_ractor_safe() in ruby.h... yes
+creating Makefile
+
+current directory: /Users/dahyon/campuscrowd/vendor/bundle/ruby/3.2.0/gems/erb-5.0.2/ext/erb/escape
+make DESTDIR\= sitearchdir\=./.gem.20250729-86690-255227 sitelibdir\=./.gem.20250729-86690-255227 clean
+
+current directory: /Users/dahyon/campuscrowd/vendor/bundle/ruby/3.2.0/gems/erb-5.0.2/ext/erb/escape
+make DESTDIR\= sitearchdir\=./.gem.20250729-86690-255227 sitelibdir\=./.gem.20250729-86690-255227
+compiling escape.c
+linking shared-object erb/escape.bundle
+ld: warning: ignoring duplicate libraries: '-lruby.3.2'
+
+current directory: /Users/dahyon/campuscrowd/vendor/bundle/ruby/3.2.0/gems/erb-5.0.2/ext/erb/escape
+make DESTDIR\= sitearchdir\=./.gem.20250729-86690-255227 sitelibdir\=./.gem.20250729-86690-255227 install
+/usr/bin/install -c -m 0755 escape.bundle ./.gem.20250729-86690-255227/erb
+
+current directory: /Users/dahyon/campuscrowd/vendor/bundle/ruby/3.2.0/gems/erb-5.0.2/ext/erb/escape
+make DESTDIR\= sitearchdir\=./.gem.20250729-86690-255227 sitelibdir\=./.gem.20250729-86690-255227 clean

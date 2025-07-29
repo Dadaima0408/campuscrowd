@@ -1,0 +1,16 @@
+<p style="color: green"><%= notice %></p>
+
+<% content_for :title, "Crowd reports" %>
+
+<h1>Crowd reports</h1>
+
+<div id="crowd_reports">
+  <% @crowd_reports.each do |crowd_report| %>
+    <%= render crowd_report %>
+    <p>
+      <%= link_to "Show this crowd report", crowd_report %>
+    </p>
+  <% end %>
+</div>
+
+<%= link_to "New crowd report", new_crowd_report_path %>

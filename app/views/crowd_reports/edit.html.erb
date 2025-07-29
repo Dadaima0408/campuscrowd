@@ -1,0 +1,12 @@
+<% content_for :title, "Editing crowd report" %>
+
+<h1>Editing crowd report</h1>
+
+<%= render "form", crowd_report: @crowd_report %>
+
+<br>
+
+<div>
+  <%= link_to "Show this crowd report", @crowd_report %> |
+  <%= link_to "Back to crowd reports", crowd_reports_path %>
+</div>

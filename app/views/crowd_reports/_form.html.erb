@@ -1,0 +1,32 @@
+<%= form_with(model: crowd_report) do |form| %>
+  <% if crowd_report.errors.any? %>
+    <div style="color: red">
+      <h2><%= pluralize(crowd_report.errors.count, "error") %> prohibited this crowd_report from being saved:</h2>
+
+      <ul>
+        <% crowd_report.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :level, style: "display: block" %>
+    <%= form.text_field :level %>
+  </div>
+
+  <div>
+    <%= form.label :comment, style: "display: block" %>
+    <%= form.textarea :comment %>
+  </div>
+
+  <div>
+    <%= form.label :location_id, style: "display: block" %>
+    <%= form.collection_select :location_id, Location.all, :id, :name, prompt: "場所を選択してください" %>
+  </div>
+
+  <div>
+    <%= form.submit %>
+  </div>
+<% end %>
