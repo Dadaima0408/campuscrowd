@@ -28,6 +28,7 @@ end
 group :development, :test do
   gem "sqlite3", "~> 1.4"
   gem "debug", platforms: %i[mri windows], require: "debug/prelude"
+gem "debug", group: [:development, :test]
   gem "brakeman", require: false
   gem "rubocop-rails-omakase", require: false
 end
