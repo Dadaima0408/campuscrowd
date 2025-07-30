@@ -78,6 +78,7 @@ GEM
     base64 (0.3.0)
     bcrypt_pbkdf (1.1.1)
     bcrypt_pbkdf (1.1.1-arm64-darwin)
+    bcrypt_pbkdf (1.1.1-x86_64-darwin)
     benchmark (0.4.1)
     bigdecimal (3.2.2)
     bindex (0.8.1)
@@ -181,6 +182,8 @@ GEM
       racc (~> 1.4)
     nokogiri (1.18.9-arm64-darwin)
       racc (~> 1.4)
+    nokogiri (1.18.9-x86_64-darwin)
+      racc (~> 1.4)
     nokogiri (1.18.9-x86_64-linux-gnu)
       racc (~> 1.4)
     nokogiri (1.18.9-x86_64-linux-musl)
@@ -193,6 +196,7 @@ GEM
     pg (1.6.0)
     pg (1.6.0-aarch64-linux)
     pg (1.6.0-arm64-darwin)
+    pg (1.6.0-x86_64-darwin)
     pg (1.6.0-x86_64-linux)
     pp (0.6.2)
       prettyprint
@@ -300,6 +304,7 @@ GEM
     sqlite3 (1.7.3-aarch64-linux)
     sqlite3 (1.7.3-arm-linux)
     sqlite3 (1.7.3-arm64-darwin)
+    sqlite3 (1.7.3-x86_64-darwin)
     sqlite3 (1.7.3-x86_64-linux)
     sshkit (1.24.0)
       base64
@@ -315,6 +320,7 @@ GEM
     thruster (0.1.14)
     thruster (0.1.14-aarch64-linux)
     thruster (0.1.14-arm64-darwin)
+    thruster (0.1.14-x86_64-darwin)
     thruster (0.1.14-x86_64-linux)
     timeout (0.4.3)
     tsort (0.2.0)
@@ -346,9 +352,11 @@ PLATFORMS
   aarch64-linux
   aarch64-linux-gnu
   aarch64-linux-musl
+  arm-linux
   arm-linux-gnu
   arm-linux-musl
-  arm64-darwin-24
+  arm64-darwin
+  x86_64-darwin
   x86_64-linux
   x86_64-linux-gnu
   x86_64-linux-musl
