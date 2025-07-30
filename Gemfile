@@ -11,7 +11,6 @@ gem "stimulus-rails"
 gem "cssbundling-rails"
 gem "jbuilder"
 gem "solid_cache"
-gem "solid_queue"
 gem "bootsnap", require: false
 gem "kamal", require: false
 gem "thruster", require: false
