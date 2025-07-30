@@ -1,16 +1,29 @@
 default: &default
-  adapter: sqlite3
+  adapter: postgresql
+  encoding: unicode
   pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
-  timeout: 5000
+  url: <%= ENV["DATABASE_URL"] %>
 
 development:
   <<: *default
-  database: storage/development.sqlite3
 
 test:
   <<: *default
-  database: storage/test.sqlite3
-  
-  production:
-  <<: *default
-  url: <%= ENV['DATABASE_URL'] %>
+
+production:
+  primary:
+    <<: *default
+  # ❌ 이거 지워버려. cable 캐시 큐 이런 거 설정 안 하면 필요 없어
+  # cache:
+  #   <<: *default
+  #   database: storage/production_cache.sqlite3
+  #   migrations_paths: db/cache_migrate
+  # queue:
+  #   <<: *default
+  #   database: storage/production_queue.sqlite3
+  #   migrations_paths: db/queue_migrate
+  # cable:
+  #   <<: *default
+  #   database: storage/production_cable.sqlite3
+  #   migrations_paths: db/cable_migrate
+  #   adapter: postgresql
