@@ -2,7 +2,7 @@ source "https://rubygems.org"
 
 ruby '3.2.2' # ← 네가 사용하는 Ruby 버전에 맞춰 설정 (예: 3.2.2)
 
-gem "rails", "~> 8.0.2"
+gem "rails", "~> 8.1.0"
 gem "puma", ">= 5.0"
 gem "propshaft"
 gem "importmap-rails"
